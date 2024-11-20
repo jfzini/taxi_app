@@ -1,4 +1,4 @@
-import rideRouter from './Ride.routes';
+import rideRouter from './ride.routes';
 import { Router } from 'express';
 
 const router = Router();
