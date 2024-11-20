@@ -1,0 +1,9 @@
+# Dependencies
+node_modules
+
+# Env variables
+.env
+
+# Test logs
+.nyc_output
+coverage
