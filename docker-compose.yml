@@ -7,7 +7,11 @@ services:
     environment:
       DATABASE_URL: "mysql://root:password@mysql:3306/my_database"
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
+    command: ["sh", "-c", "npx prisma db push && npx prisma generate && npm run dev"]
+    volumes:
+      - ./backend:/app-backend
 
   mysql:
     image: mysql:8.0
@@ -19,6 +23,12 @@ services:
       MYSQL_DATABASE: my_database
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "--silent"]
+      interval: 30s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
 
 volumes:
   mysql_data:
