@@ -1,4 +1,5 @@
-import type { ICoords } from '../interfaces/Coords';
+import type { ICoords, RoutesOptions } from '../interfaces/Coords';
+import { RoutesClient } from '@googlemaps/routing';
 import axios from 'axios';
 import dotenv from 'dotenv';
 
@@ -23,4 +24,38 @@ export const getLocationCoords = async (location: string): Promise<ICoords> => {
     latitude: coords.lat,
     longitude: coords.lng,
   };
+};
+
+export const getRoutes = async ({
+  origin,
+  destination,
+  travelMode = 'DRIVE',
+  routingPreference = 'TRAFFIC_UNAWARE',
+}: RoutesOptions) => {
+  const client = new RoutesClient({ apiKey: GOOGLE_API_KEY });
+  const routes = await client.computeRoutes(
+    {
+      origin: {
+        location: {
+          latLng: origin,
+        },
+      },
+      destination: {
+        location: {
+          latLng: destination,
+        },
+      },
+      travelMode,
+      routingPreference,
+    },
+    {
+      otherArgs: {
+        headers: {
+          'X-Goog-FieldMask': 'routes.duration,routes.distanceMeters',
+        },
+      },
+    },
+  );
+
+  return routes;
 };
