@@ -9,5 +9,6 @@ rideRouter.get('/', (req: Request, res: Response) => {
 });
 
 rideRouter.post('/estimate', estimateMiddleware, rideController.estimateRoute);
+rideRouter.patch('/confirm', estimateMiddleware, rideController.confirmRide);
 
 export default rideRouter;

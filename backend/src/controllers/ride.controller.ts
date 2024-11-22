@@ -19,4 +19,22 @@ const estimateRoute = async (req: Request, res: Response) => {
   }
 };
 
-export default { estimateRoute };
+const confirmRide = async (req: Request, res: Response) => {
+  const { distance, driver } = req.body;
+
+  // TODO: validate driver
+  const { id: driverId, name: driverName } = driver;
+
+  try {
+    const { status, response } = await RideService.confirmRide(distance, driverId, driverName);
+    res.status(status).json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error_code: 'INTERNAL_SERVER_ERROR',
+      error_description: 'An error occurred while processing the request',
+    });
+  }
+}  
+
+export default { estimateRoute, confirmRide };

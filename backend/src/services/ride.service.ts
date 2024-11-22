@@ -23,7 +23,7 @@ const estimateRoute = async (origin: string, destination: string) => {
       return { status: 404, message: 'No routes found' };
     }
     const distance = Number(shorterRoute.distanceMeters);
-    const drivers = await RideModel.findDrivers(distance);
+    const drivers = await RideModel.findDriversByDistance(distance);
 
     const response = {
       origin: originCoords,
@@ -47,4 +47,48 @@ const estimateRoute = async (origin: string, destination: string) => {
   }
 };
 
-export default { estimateRoute };
+const confirmRide = async (distance: number, driverId: number, driverName: string) => {
+  try {
+    const driver = await RideModel.findDriver(driverId, driverName);
+
+    if (!driver) {
+      return {
+        status: 404,
+        response: {
+          error_code: 'INVALID_INSTANCE',
+          error_description: 'No drivers were found.',
+        },
+      };
+    }
+
+    const distanceInKm = distance / 1000;
+
+    if (driver.minKm > distanceInKm) {
+      return {
+        status: 406,
+        response: {
+          error_code: 'INVALID_INSTANCE',
+          error_description: "The ride's distance doesn't meet the driver's minimum distance.",
+        },
+      };
+    }
+
+    return {
+      status: 200,
+      response: {
+        wip: 'wip'
+      }
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      status: 500,
+      response: {
+        error_code: 'INTERNAL_SERVER_ERROR',
+        error_description: 'An error occurred while processing the request',
+      },
+    };
+  }
+};
+
+export default { estimateRoute, confirmRide };
