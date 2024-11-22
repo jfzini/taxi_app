@@ -3,7 +3,8 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  const drivers = await prisma.driver.createMany({
+  // Seeding drivers
+  await prisma.driver.createMany({
     data: [
       {
         name: 'Homer Simpson',
@@ -41,6 +42,30 @@ async function main() {
   });
 
   console.log('Seed drivers complete');
+
+  // Seeding customers
+  await prisma.customer.createMany({
+    data: [
+      {
+        name: 'João Grilo',
+        email: 'joao.grilo@example.com',
+      },
+      {
+        name: 'Chicó',
+        email: 'chico@example.com',
+      },
+      {
+        name: 'Major Antônio Morais',
+        email: 'major.antonio.morais@example.com',
+      },
+      {
+        name: 'Dora',
+        email: 'dorinha@example.com',
+      },
+    ],
+  });
+
+  console.log('Seed customers complete');
 }
 
 main()
