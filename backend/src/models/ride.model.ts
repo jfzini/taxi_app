@@ -53,4 +53,35 @@ const createRide = async (ride: IRide) => {
   return createdRide;
 };
 
-export default { findDriversByDistance, findDriver, createRide };
+const listCustomerRides = async (customerId: string, driverId?: number) => {
+  const parsedDriverId = driverId ? driverId : undefined; // Avoid inconsistencies with NaN and null values
+
+  const rides = await prisma.ride.findMany({
+    where: {
+      customerId,
+      driverId: parsedDriverId,
+    },
+    select: {
+      id: true,
+      date: true,
+      origin: true,
+      destination: true,
+      distance: true,
+      duration: true,
+      driver: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      value: true,
+    },
+    orderBy: {
+      date: 'desc',
+    }
+  });
+
+  return rides;
+};
+
+export default { findDriversByDistance, findDriver, createRide, listCustomerRides };

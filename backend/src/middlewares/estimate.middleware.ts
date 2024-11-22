@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 
-const estimateMiddleware = (req: Request, res: Response, next: NextFunction): void => {
+export const estimateMiddleware = (req: Request, res: Response, next: NextFunction): void => {
   const { customer_id, origin, destination } = req.body;
   if (!customer_id || !origin || !destination) {
     res.status(400).json({
@@ -21,4 +21,15 @@ const estimateMiddleware = (req: Request, res: Response, next: NextFunction): vo
   next();
 };
 
-export default estimateMiddleware;
+export const listRidesMiddleware = (req: Request, res: Response, next: NextFunction): void => {
+  const { customer_id } = req.params;
+  if (!customer_id) {
+    res.status(400).json({
+      error_code: 'INVALID_DATA',
+      error_description: 'Missing required fields',
+    });
+    return;
+  }
+
+  next();
+}

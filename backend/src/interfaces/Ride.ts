@@ -10,7 +10,7 @@ export interface IRide {
 
 export interface IDriver {
   id: number;
-  name: string;
+  name?: string;
 }
 
 export interface IConfirmRideParams {

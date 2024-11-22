@@ -118,4 +118,50 @@ const confirmRide = async ({
   }
 };
 
-export default { estimateRoute, confirmRide };
+const listCustomerRides = async (customerId: string, driverId?: number) => {
+  try {
+    if (driverId) {
+      const foundDriver = await RideModel.findDriver({ id: driverId });
+
+      if (!foundDriver) {
+        return {
+          status: 400,
+          response: {
+            error_code: 'INVALID_DRIVER',
+            error_description: 'Invalid driver id',
+          },
+        };
+      }
+    }
+
+    const rides = await RideModel.listCustomerRides(customerId, driverId);
+
+    if (rides.length === 0) {
+      return {
+        status: 404,
+        response: {
+          error_code: 'NOT_RIDES_FOUND',
+          error_description: 'No rides found for this customer',
+        },
+      };
+    }
+
+    const response = {
+      customer_id: customerId,
+      rides,
+    };
+
+    return { status: 200, response };
+  } catch (error) {
+    console.error(error);
+    return {
+      status: 500,
+      response: {
+        error_code: 'INTERNAL_SERVER_ERROR',
+        error_description: 'An error occurred while processing the request',
+      },
+    };
+  }
+};
+
+export default { estimateRoute, confirmRide, listCustomerRides };
