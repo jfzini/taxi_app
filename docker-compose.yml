@@ -1,5 +1,12 @@
 version: "3.0"
 services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "8081:80"
+    volumes:
+      - ./frontend:/app-frontend
+
   backend:
     build: ./backend
     ports:
