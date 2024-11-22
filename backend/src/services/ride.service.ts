@@ -37,7 +37,13 @@ const estimateRoute = async (origin: string, destination: string) => {
     return { status: 200, response };
   } catch (error) {
     console.error(error);
-    return { status: 500, response: 'An error occurred while processing the request' };
+    return {
+      status: 500,
+      response: {
+        error_code: 'INTERNAL_SERVER_ERROR',
+        error_description: 'An error occurred while processing the request',
+      },
+    };
   }
 };
 
