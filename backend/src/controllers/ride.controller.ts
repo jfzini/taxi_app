@@ -7,9 +7,9 @@ const estimateRoute = async (req: Request, res: Response) => {
   const { origin, destination } = req.body;
 
   try {
-    const { status, response} = await RideService.estimateRoute(origin, destination);
+    const { status, response } = await RideService.estimateRoute(origin, destination);
     res.status(status).json(response);
-    return
+    return;
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -20,13 +20,11 @@ const estimateRoute = async (req: Request, res: Response) => {
 };
 
 const confirmRide = async (req: Request, res: Response) => {
-  const { distance, driver } = req.body;
-
-  // TODO: validate driver
-  const { id: driverId, name: driverName } = driver;
+  const { customer_id, ...body } = req.body;
+  body.customerId = customer_id;
 
   try {
-    const { status, response } = await RideService.confirmRide(distance, driverId, driverName);
+    const { status, response } = await RideService.confirmRide(body);
     res.status(status).json(response);
   } catch (error) {
     console.error(error);
@@ -35,6 +33,6 @@ const confirmRide = async (req: Request, res: Response) => {
       error_description: 'An error occurred while processing the request',
     });
   }
-}  
+};
 
 export default { estimateRoute, confirmRide };

@@ -1,4 +1,8 @@
+// Utils
 import { getLocationCoords, getRoutes } from '../utils/coord.util';
+
+// Interfaces / Types
+import type { IConfirmRideParams } from '../interfaces/Ride';
 
 // Model
 import RideModel from '../models/ride.model';
@@ -13,7 +17,10 @@ const estimateRoute = async (origin: string, destination: string) => {
       destinationCoordsPromise,
     ]);
 
-    const [routes] = await getRoutes({ origin: originCoords, destination: destinationCoords });
+    const [routes] = await getRoutes({
+      origin: originCoords,
+      destination: destinationCoords,
+    });
 
     const shorterRoute = routes.routes?.sort(
       (a, b) => Number(a.distanceMeters) - Number(b.distanceMeters),
@@ -47,11 +54,19 @@ const estimateRoute = async (origin: string, destination: string) => {
   }
 };
 
-const confirmRide = async (distance: number, driverId: number, driverName: string) => {
+const confirmRide = async ({
+  customerId,
+  origin,
+  destination,
+  distance,
+  duration,
+  driver,
+  value,
+}: IConfirmRideParams) => {
   try {
-    const driver = await RideModel.findDriver(driverId, driverName);
+    const foundDriver = await RideModel.findDriver(driver.id, driver.name);
 
-    if (!driver) {
+    if (!foundDriver) {
       return {
         status: 404,
         response: {
@@ -63,22 +78,34 @@ const confirmRide = async (distance: number, driverId: number, driverName: strin
 
     const distanceInKm = distance / 1000;
 
-    if (driver.minKm > distanceInKm) {
+    if (foundDriver.minKm > distanceInKm) {
       return {
         status: 406,
         response: {
           error_code: 'INVALID_INSTANCE',
-          error_description: "The ride's distance doesn't meet the driver's minimum distance.",
+          error_description: 'Invalid distance for driver.',
         },
       };
     }
 
+    const rideToCreate = {
+      origin,
+      destination,
+      distance,
+      duration,
+      value,
+      customerId,
+      driverId: foundDriver.id,
+    };
+
+    await RideModel.createRide(rideToCreate);
+
     return {
       status: 200,
       response: {
-        wip: 'wip'
-      }
-    }
+        success: true,
+      },
+    };
   } catch (error) {
     console.error(error);
     return {

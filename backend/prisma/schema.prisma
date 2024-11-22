@@ -48,6 +48,4 @@ model Ride {
   customerId String
   driver     Driver   @relation(fields: [driverId], references: [id])
   driverId   Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
 }

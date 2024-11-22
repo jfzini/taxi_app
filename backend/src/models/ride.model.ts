@@ -1,5 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 
+// Interfaces / Types
+import type { IRide } from '../interfaces/Ride';
+
 const prisma = new PrismaClient();
 
 const findDriversByDistance = async (distance: number) => {
@@ -42,4 +45,12 @@ const findDriver = async (id: number, name: string) => {
   return driver;
 };
 
-export default { findDriversByDistance, findDriver };
+const createRide = async (ride: IRide) => {
+  const createdRide = await prisma.ride.create({
+    data: ride,
+  });
+
+  return createdRide;
+};
+
+export default { findDriversByDistance, findDriver, createRide };
