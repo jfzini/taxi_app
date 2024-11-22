@@ -1,12 +1,15 @@
 import type { Request, Response } from 'express';
+
+// Service
 import RideService from '../services/ride.service';
 
 const estimateRoute = async (req: Request, res: Response) => {
   const { origin, destination } = req.body;
 
   try {
-    const routes = await RideService.estimateRoute(origin, destination);
-    res.status(200).json(routes);
+    const { status, response} = await RideService.estimateRoute(origin, destination);
+    res.status(status).json(response);
+    return
   } catch (error) {
     console.error(error);
     res.status(500).json({
