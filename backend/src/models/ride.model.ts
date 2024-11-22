@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
 // Interfaces / Types
-import type { IRide } from '../interfaces/Ride';
+import type { IDriver, IRide } from '../interfaces/Ride';
 
 const prisma = new PrismaClient();
 
@@ -34,7 +34,7 @@ const findDriversByDistance = async (distance: number) => {
   return mappedDrivers;
 };
 
-const findDriver = async (id: number, name: string) => {
+const findDriver = async ({ id, name }: IDriver) => {
   const driver = await prisma.driver.findUnique({
     where: {
       id,

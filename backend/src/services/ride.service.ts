@@ -64,7 +64,7 @@ const confirmRide = async ({
   value,
 }: IConfirmRideParams) => {
   try {
-    const foundDriver = await RideModel.findDriver(driver.id, driver.name);
+    const foundDriver = await RideModel.findDriver(driver);
 
     if (!foundDriver) {
       return {
