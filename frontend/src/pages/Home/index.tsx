@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { useForm, type UseFormRegister, type SubmitHandler } from 'react-hook-form';
+
+// Components
 import Input from '../../components/Input';
+import Button from '../../components/Button';
+
+// Services
 import { estimateRide } from '../../services/rides.service';
 
 // Assets
@@ -82,7 +87,7 @@ function Home() {
           {formFields.map((field) => (
             <Input key={field.label} {...field} />
           ))}
-          <button type="submit">Buscar</button>
+          <Button type="submit">Buscar</Button>
         </form>
       </section>
       <aside className="hero-section">
