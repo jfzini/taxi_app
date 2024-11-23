@@ -65,14 +65,14 @@
   
     img {
       height: 45dvh;
-      border-radius: 16px;
+      border-radius: 32px;
     }
   
     &::after {
       content: '';
       position: absolute;
       background-color: var(--regular-light);
-      border-radius: 16px;
+      border-radius: 32px;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
