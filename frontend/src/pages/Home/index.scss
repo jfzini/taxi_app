@@ -29,8 +29,15 @@
   display: none;
 }
 
+.form__container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 560px;
+}
+
 // media for non-mobile devices
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1140px) {
   .home {
     padding: 64px;
   }

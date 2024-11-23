@@ -1,39 +1,41 @@
-import type React from 'react';
+import type { UseFormRegister, FieldValues, Path } from 'react-hook-form';
 
 // Styles
 import './index.scss';
 
-type InputProps = {
+type InputProps<T extends FieldValues> = {
   type?: string;
   placeholder?: string;
-  value?: string;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   label?: string;
-  name?: string;
+  required?: boolean;
+  name: Path<T>;
+  error?: string;
+  register: UseFormRegister<T>;
 };
 
-function Input({
+function Input<T extends FieldValues>({
   type = 'text',
   placeholder = 'Sua resposta',
-  value = '',
-  onChange = () => {},
   label = 'Exemplo',
+  required = false,
   name,
-}: InputProps) {
+  error,
+  register,
+}: InputProps<T>) {
   const uuid = crypto.randomUUID();
 
   return (
-    <>
+    <div className="input__wrapper">
       <label htmlFor={uuid}>{label}</label>
       <input
+        {...register(name, { required })}
         type={type}
         placeholder={placeholder}
-        value={value}
-        onChange={onChange}
         id={uuid}
-        name={name || label}
+        required={required}
       />
-    </>
+      {error && <span className="error-message">{error}</span>}
+    </div>
   );
 }
 
