@@ -1,18 +1,20 @@
 .home {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   min-height: 100dvh;
   padding: 32px;
+  gap: 32px;
 
   & section {
     display: flex;
     flex-direction: column;
     gap: 24px;
+    max-width: 100%;
   }
 
   & h1 {
-    font-size: 4rem;
+    font-size: 2.5rem;
     letter-spacing: 2px;
     max-width: 560px;
     font-weight: 700;
@@ -36,10 +38,23 @@
   max-width: 560px;
 }
 
-// media for non-mobile devices
+// media for medium devices
+@media screen and (min-width: 688px) {
+  .home {
+    & h1 {
+      font-size: 3.5rem;
+    }
+  }
+}
+
+// media for large devices
 @media screen and (min-width: 1140px) {
   .home {
     padding: 64px;
+
+    & h1 {
+      font-size: 4rem;
+    }
   }
 
   .hero-section {
