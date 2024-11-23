@@ -26,6 +26,7 @@ type FormField = {
   label: string;
   register: UseFormRegister<FormData>;
   name: keyof FormData;
+  required: boolean;
   error: string | undefined;
 };
 
@@ -58,6 +59,7 @@ function Home() {
       label: 'ID do usuário',
       register: register,
       name: 'customerId',
+      required: true,
       error: errors.customerId?.message,
     },
     {
@@ -66,6 +68,7 @@ function Home() {
       label: 'Endereço de origem',
       register: register,
       name: 'origin',
+      required: true,
       error: errors.origin?.message,
     },
     {
@@ -74,6 +77,7 @@ function Home() {
       label: 'Endereço de destino',
       register: register,
       name: 'destination',
+      required: true,
       error: errors.destination?.message,
     },
   ];

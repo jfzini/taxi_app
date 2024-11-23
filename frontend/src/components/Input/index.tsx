@@ -28,11 +28,15 @@ function Input<T extends FieldValues>({
     <div className="input__wrapper">
       <label htmlFor={uuid}>{label}</label>
       <input
-        {...register(name, { required })}
+        {...register(name, { required: {
+          value: required,
+          message: `${label} é um campo obrigatório`,
+        } })}
         type={type}
         placeholder={placeholder}
         id={uuid}
         required={required}
+        className={`input ${error ? 'input--error' : ''}`}
       />
       {error && <span className="error-message">{error}</span>}
     </div>
