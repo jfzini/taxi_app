@@ -1,11 +1,22 @@
 .input__wrapper {
   display: flex;
   flex-direction: column;
+  position: relative;
 
   & input {
     border: 1px solid var(--text-secondary);
     border-radius: 8px;
     padding: 12px 16px;
     font-size: 1rem;
+    outline: none;
+
+    &:hover:not([disabled]), &:focus {
+      border-color: var(--text-primary);
+    }
+
+    &::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.4;
+    }
   }
 }

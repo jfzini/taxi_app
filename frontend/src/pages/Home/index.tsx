@@ -49,7 +49,7 @@ function Home() {
   const formFields: FormField[] = [
     {
       type: 'text',
-      placeholder: 'Digite o id do usuário',
+      placeholder: 'Ex: 2a719913-f6fa-4404-b2d5-3e7b3f96f593',
       label: 'ID do usuário',
       register: register,
       name: 'customerId',
