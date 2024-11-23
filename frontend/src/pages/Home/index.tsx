@@ -30,6 +30,8 @@ type FormField = {
   error: string | undefined;
 };
 
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+
 function Home() {
   const {
     register,
@@ -93,6 +95,17 @@ function Home() {
           ))}
           <Button type="submit">Buscar</Button>
         </form>
+        {/* <iframe
+          title="Google Maps"
+          width="450"
+          height="250"
+          frameBorder="0"
+          // style="border:0"
+          referrerPolicy="no-referrer-when-downgrade"
+          src={`https://www.google.com/maps/embed/v1/directions?key=${GOOGLE_API_KEY}&origin=-19.8513605/-43.9779221
+  &destination=-19.9329185/-43.938381`}
+          allowFullScreen
+        /> */}
       </section>
       <aside className="hero-section">
         <img
