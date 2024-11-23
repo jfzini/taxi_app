@@ -1,0 +1,62 @@
+.home {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100dvh;
+  padding: 32px;
+
+  & section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  & h1 {
+    font-size: 4rem;
+    letter-spacing: 2px;
+    max-width: 560px;
+    font-weight: 700;
+  }
+
+  & h3 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    max-width: 560px;
+  }
+}
+
+.hero-section {
+  display: none;
+}
+
+// media for non-mobile devices
+@media screen and (min-width: 1024px) {
+  .home {
+    padding: 64px;
+  }
+
+  .hero-section {
+    display: block;
+    padding-block: 64px;
+    position: relative;
+    height: fit-content;
+  
+    img {
+      height: 45dvh;
+      border-radius: 16px;
+    }
+  
+    &::after {
+      content: '';
+      position: absolute;
+      background-color: #b7e975;
+      border-radius: 16px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      height: 100%;
+      width: 50%;
+      z-index: -1;
+    }
+  }
+}

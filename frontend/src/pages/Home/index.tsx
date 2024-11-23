@@ -2,6 +2,12 @@ import { useState } from 'react';
 import Input from '../../components/Input';
 import { estimateRide } from '../../services/rides.service';
 
+// Assets
+import driverImage from '../../assets/driver.png';
+
+// Styles
+import './index.scss';
+
 function Home() {
   const [formData, setFormData] = useState({
     customerId: '',
@@ -23,12 +29,10 @@ function Home() {
   }
 
   return (
-    <>
+    <main className="home">
       <section>
-        <h1>SHOPPER'S RIDES</h1>
-        <p>Bem-vindo(a) ao Shopper's Rides!</p>
-      </section>
-      <section>
+        <h1>ENCONTRE SUA PRÓXIMA VIAGEM!</h1>
+        <h3>Insira as informações abaixo para dar início à sua solução do dia-dia</h3>
         <form onSubmit={handleSubmit}>
           <Input
             type="text"
@@ -57,7 +61,14 @@ function Home() {
           <button type="submit">Buscar</button>
         </form>
       </section>
-    </>
+      <aside className="hero-section">
+        <img
+          src={driverImage}
+          alt="Imagem de um motorista ao volante olhando para a estrada"
+          draggable={false}
+        />
+      </aside>
+    </main>
   );
 }
 
