@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  min-height: 100dvh;
+  min-height: calc(100vh - 80px);
   padding: 32px;
   gap: 32px;
 
@@ -71,7 +71,7 @@
     &::after {
       content: '';
       position: absolute;
-      background-color: var(--regular-light);
+      background-color: var(--regular-dark);
       border-radius: 32px;
       top: 50%;
       left: 50%;

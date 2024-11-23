@@ -1,0 +1,48 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--dark-blue);
+  height: 80px;
+  padding-inline: 20px;
+
+  & img {
+    width: 80px;
+  }
+
+  & h1 {
+    font-size: 1rem;
+    color: var(--light);
+  }
+}
+
+// media for medium devices
+@media screen and (min-width: 688px) {
+  .page-header {
+    & h1 {
+      margin-inline: auto;
+      font-size: 1.5rem;
+    }
+
+    & img {
+      position: absolute;
+      width: 100px;
+    }
+  }
+}
+
+// media for large devices
+@media screen and (min-width: 1140px) {
+  .page-header {
+    padding-inline: 60px;
+
+    & h1 {
+      font-size: 2rem;
+    }
+
+    & img {
+      position: absolute;
+      width: 160px;
+    }
+  }
+}
