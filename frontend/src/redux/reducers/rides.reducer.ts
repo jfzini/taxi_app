@@ -7,12 +7,16 @@ const initialState: IRideState = {
 		origin: {
 			latitude: 0,
 			longitude: 0,
+			address: "",
 		},
 		destination: {
 			latitude: 0,
 			longitude: 0,
+			address: "",
 		},
-	}
+	},
+	distance: 0,
+	duration: "",
 };
 
 const ridesReducer = (
@@ -30,6 +34,21 @@ const ridesReducer = (
 			return {
 				...state,
 				coords: action.payload,
+			};
+		case "CHANGE_DISTANCE":
+			return {
+				...state,
+				distance: action.payload,
+			};
+		case "CHANGE_DURATION":
+			return {
+				...state,
+				duration: action.payload,
+			};
+		case "CHANGE_VALUE":
+			return {
+				...state,
+				value: action.payload,
 			};
 		default:
 			return state;

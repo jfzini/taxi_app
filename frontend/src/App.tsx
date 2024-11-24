@@ -7,7 +7,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/opcoes" element={<RideOptions />} />
+        <Route path="/opcoes/:customer_id?" element={<RideOptions />} />
       </Routes>
     </BrowserRouter>
   );

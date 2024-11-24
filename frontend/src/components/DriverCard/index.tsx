@@ -1,3 +1,18 @@
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+
+// Interfaces / Types
+import { AxiosError } from 'axios';
+import type { IReduxStates } from '../../redux/types';
+
+// Components
+import Button from '../Button';
+
+// Services
+import { confirmRide } from '../../services/rides.service';
+
+// Styles
 import './index.scss';
 
 type Driver = {
@@ -36,6 +51,37 @@ function renderStars(rating: number) {
 }
 
 function DriverCard({ id, name, description, vehicle, value, review }: Driver) {
+  const { customer_id } = useParams<{ customer_id: string }>();
+  const { coords, distance, duration } = useSelector((state: IReduxStates) => state.rides);
+
+  const handleConfirm = async () => {
+    const body = {
+      customer_id,
+      origin: coords.origin.address,
+      destination: coords.destination.address,
+      distance,
+      duration,
+      driver: {
+        id,
+        name,
+      },
+      value,
+    };
+
+    try {
+      await confirmRide(body);
+      toast.success('Corrida confirmada com sucesso!');
+      // navigate(`/corrida/${response.id}`);
+    } catch (error) {
+      console.error(error);
+      if (error instanceof AxiosError && error.response?.data?.error_description) {
+        toast.error(error.response.data.error_description);
+      } else {
+        toast.error('Erro ao confirmar corrida. Tente novamente mais tarde.');
+      }
+    }
+  };
+
   return (
     <article key={id} className="driver-card">
       <header>
@@ -52,6 +98,7 @@ function DriverCard({ id, name, description, vehicle, value, review }: Driver) {
       <p>
         <strong>Comentário:</strong> {review.comment}
       </p>
+      <Button onClick={handleConfirm}>Contratar</Button>
     </article>
   );
 }

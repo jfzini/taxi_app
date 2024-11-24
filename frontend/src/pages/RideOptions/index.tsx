@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 // Types
 import type { IReduxStates } from '../../redux/types';
@@ -12,7 +13,7 @@ import './index.scss';
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 function RideOptions() {
-  const { rides, coords } = useSelector((state: IReduxStates) => state.rides);
+  const { rides, coords } = useSelector((state: IReduxStates) => state.rides);  
 
   if (rides.length === 0) {
     return (

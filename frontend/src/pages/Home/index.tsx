@@ -13,7 +13,12 @@ import Button from '../../components/Button';
 import { estimateRide } from '../../services/rides.service';
 
 // Actions
-import { changeCoords, changeRides } from '../../redux/actions/rides.actions';
+import {
+  changeCoords,
+  changeDistance,
+  changeDuration,
+  changeRides,
+} from '../../redux/actions/rides.actions';
 
 // Assets
 import driverImage from '../../assets/driver.png';
@@ -56,10 +61,17 @@ function Home() {
       const response = await estimateRide(data.customerId, data.origin, data.destination);
       if (response?.options) {
         dispatch(changeRides(response.options));
-        dispatch(changeCoords({ origin: response.origin, destination: response.destination }));
+        dispatch(
+          changeCoords({
+            origin: { ...response.origin, address: data.origin },
+            destination: { ...response.destination, address: data.destination },
+          }),
+        );
+        dispatch(changeDistance(response.distance));
+        dispatch(changeDuration(response.duration));
       }
       toast.success('Busca realizada com sucesso!');
-      navigate('/opcoes');
+      navigate(`/opcoes/${data.customerId}`);
     } catch (error) {
       console.error(error);
       if (error instanceof AxiosError && error.response?.data?.error_description) {

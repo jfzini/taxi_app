@@ -9,3 +9,9 @@ export const estimateRide = async (customer_id: string, origin: string, destinat
 
   return response.data;
 };
+
+export const confirmRide = async (body) => {
+  const response = await axios.patch('http://localhost:8080/ride/confirm', body);
+
+  return response.data;
+};
