@@ -13,6 +13,7 @@ import Header from './components/Header/index.tsx';
 import Footer from './components/Footer/index.tsx';
 
 // Styles
+import 'react-toastify/dist/ReactToastify.css';
 import './variables.scss';
 import './index.scss';
 

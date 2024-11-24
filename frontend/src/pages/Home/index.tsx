@@ -1,5 +1,9 @@
+import { AxiosError } from 'axios';
 import { useState } from 'react';
 import { useForm, type UseFormRegister, type SubmitHandler } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 // Components
 import Input from '../../components/Input';
@@ -7,6 +11,9 @@ import Button from '../../components/Button';
 
 // Services
 import { estimateRide } from '../../services/rides.service';
+
+// Actions
+import { changeCoords, changeRides } from '../../redux/actions/rides.actions';
 
 // Assets
 import driverImage from '../../assets/driver.png';
@@ -31,6 +38,8 @@ type FormField = {
 };
 
 function Home() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -43,10 +52,21 @@ function Home() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setIsSubmitting(true);
     try {
+      dispatch(changeRides([])); // Clear previous rides
       const response = await estimateRide(data.customerId, data.origin, data.destination);
-      console.log(response);
+      if (response?.options) {
+        dispatch(changeRides(response.options));
+        dispatch(changeCoords({ origin: response.origin, destination: response.destination }));
+      }
+      toast.success('Busca realizada com sucesso!');
+      navigate('/opcoes');
     } catch (error) {
       console.error(error);
+      if (error instanceof AxiosError && error.response?.data?.error_description) {
+        toast.error(error.response.data.error_description);
+      } else {
+        toast.error('Não foi possível realizar a busca. Tente novamente mais tarde');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -91,7 +111,9 @@ function Home() {
           {formFields.map((field) => (
             <Input key={field.label} {...field} />
           ))}
-          <Button type="submit">Buscar</Button>
+          <Button type="submit" isLoading={isSubmitting}>
+            Buscar
+          </Button>
         </form>
       </section>
       <aside className="hero-section">

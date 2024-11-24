@@ -10,6 +10,12 @@
     width: 80px;
   }
 
+  & a {
+    display: flex;
+    align-items: center;
+    height: 60px;
+  }
+
   & h2 {
     font-size: 1rem;
     color: var(--light);
@@ -25,7 +31,7 @@
     }
 
     & img {
-      position: absolute;
+      // position: absolute;
       width: 100px;
     }
   }

@@ -1,23 +1,18 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-
-interface IRide {
-	id: number;
-	name: string;
-	description: string;
-	vehicle: string;
-	review: {
-		rating: number;
-		comment: string;
-	};
-	value: number;
-}
-
-interface IRideState {
-	rides: IRide[];
-}
+import type { IRideState } from "../types";
 
 const initialState: IRideState = {
 	rides: [],
+	coords: {
+		origin: {
+			latitude: 0,
+			longitude: 0,
+		},
+		destination: {
+			latitude: 0,
+			longitude: 0,
+		},
+	}
 };
 
 const ridesReducer = (
@@ -30,6 +25,11 @@ const ridesReducer = (
 			return {
 				...state,
 				rides: action.payload,
+			};
+		case "CHANGE_COORDS":
+			return {
+				...state,
+				coords: action.payload,
 			};
 		default:
 			return state;
