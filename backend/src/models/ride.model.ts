@@ -79,7 +79,7 @@ const listCustomerRides = async (customerId: string, driverId?: number) => {
     },
     orderBy: {
       date: 'desc',
-    }
+    },
   });
 
   return rides;
@@ -89,6 +89,19 @@ const listCustomers = async () => {
   const customers = await prisma.customer.findMany();
 
   return customers;
-}
+};
 
-export default { findDriversByDistance, findDriver, createRide, listCustomerRides, listCustomers };
+const listDrivers = async () => {
+  const drivers = await prisma.driver.findMany();
+
+  return drivers;
+};
+
+export default {
+  findDriversByDistance,
+  findDriver,
+  createRide,
+  listCustomerRides,
+  listCustomers,
+  listDrivers,
+};

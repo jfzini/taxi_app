@@ -189,6 +189,33 @@ const listCustomers = async () => {
       },
     };
   }
-}
+};
 
-export default { estimateRoute, confirmRide, listCustomerRides, listCustomers };
+const listDrivers = async () => {
+  try {
+    const drivers = await RideModel.listDrivers();
+
+    if (drivers.length === 0) {
+      return {
+        status: 404,
+        response: {
+          error_code: 'NOT_DRIVERS_FOUND',
+          error_description: 'Nenhum motorista encontrado',
+        },
+      };
+    }
+
+    return { status: 200, response: drivers };
+  } catch (error) {
+    console.error(error);
+    return {
+      status: 500,
+      response: {
+        error_code: 'INTERNAL_SERVER_ERROR',
+        error_description: 'Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde',
+      },
+    };
+  }
+};
+
+export default { estimateRoute, confirmRide, listCustomerRides, listCustomers, listDrivers };

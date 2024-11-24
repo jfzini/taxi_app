@@ -40,7 +40,10 @@ const listCustomerRides = async (req: Request, res: Response) => {
   const { driver_id } = req.query;
 
   try {
-    const { status, response } = await RideService.listCustomerRides(customer_id, Number(driver_id));
+    const { status, response } = await RideService.listCustomerRides(
+      customer_id,
+      Number(driver_id),
+    );
     res.status(status).json(response);
   } catch (error) {
     console.error(error);
@@ -49,7 +52,7 @@ const listCustomerRides = async (req: Request, res: Response) => {
       error_description: 'Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde',
     });
   }
-}
+};
 
 const listCustomers = async (_req: Request, res: Response) => {
   try {
@@ -62,6 +65,19 @@ const listCustomers = async (_req: Request, res: Response) => {
       error_description: 'Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde',
     });
   }
-}
+};
 
-export default { estimateRoute, confirmRide, listCustomerRides, listCustomers };
+const listDrivers = async (_req: Request, res: Response) => {
+  try {
+    const { status, response } = await RideService.listDrivers();
+    res.status(status).json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error_code: 'INTERNAL_SERVER_ERROR',
+      error_description: 'Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde',
+    });
+  }
+};
+
+export default { estimateRoute, confirmRide, listCustomerRides, listCustomers, listDrivers };
