@@ -1,0 +1,26 @@
+.driver-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid var(--regular-dark);
+  border-radius: 16px;
+  padding: 24px;
+  background-color: #f8f8f8;
+  width: max(100%, 500px);
+  max-width: calc(100dvw - 64px);
+
+  & header {
+    display: flex;
+    gap: 12px;
+  }
+
+  & h4 {
+    line-height: 100%;
+    margin-bottom: 8px;
+    font-size: 1.3rem;
+  }
+
+  & p {
+    font-size: 0.9rem;
+  }
+}

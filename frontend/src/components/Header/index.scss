@@ -10,7 +10,7 @@
     width: 80px;
   }
 
-  & h1 {
+  & h2 {
     font-size: 1rem;
     color: var(--light);
   }
@@ -19,7 +19,7 @@
 // media for medium devices
 @media screen and (min-width: 688px) {
   .page-header {
-    & h1 {
+    & h2 {
       margin-inline: auto;
       font-size: 1.5rem;
     }
@@ -36,7 +36,7 @@
   .page-header {
     padding-inline: 60px;
 
-    & h1 {
+    & h2 {
       font-size: 2rem;
     }
 

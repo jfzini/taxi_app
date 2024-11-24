@@ -8,7 +8,7 @@ function Header() {
   return (
     <header className='page-header'>
       <img src={Logo} alt='Shopper Rides' draggable={false} />
-      <h1>Shopper Rides</h1>
+      <h2>Shopper Rides</h2>
     </header>
   )
 }
