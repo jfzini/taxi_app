@@ -85,4 +85,10 @@ const listCustomerRides = async (customerId: string, driverId?: number) => {
   return rides;
 };
 
-export default { findDriversByDistance, findDriver, createRide, listCustomerRides };
+const listCustomers = async () => {
+  const customers = await prisma.customer.findMany();
+
+  return customers;
+}
+
+export default { findDriversByDistance, findDriver, createRide, listCustomerRides, listCustomers };

@@ -164,4 +164,31 @@ const listCustomerRides = async (customerId: string, driverId?: number) => {
   }
 };
 
-export default { estimateRoute, confirmRide, listCustomerRides };
+const listCustomers = async () => {
+  try {
+    const customers = await RideModel.listCustomers();
+
+    if (customers.length === 0) {
+      return {
+        status: 404,
+        response: {
+          error_code: 'NOT_CUSTOMERS_FOUND',
+          error_description: 'Nenhum cliente encontrado',
+        },
+      };
+    }
+
+    return { status: 200, response: customers };
+  } catch (error) {
+    console.error(error);
+    return {
+      status: 500,
+      response: {
+        error_code: 'INTERNAL_SERVER_ERROR',
+        error_description: 'Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde',
+      },
+    };
+  }
+}
+
+export default { estimateRoute, confirmRide, listCustomerRides, listCustomers };

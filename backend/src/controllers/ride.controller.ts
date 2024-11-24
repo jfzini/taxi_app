@@ -51,4 +51,17 @@ const listCustomerRides = async (req: Request, res: Response) => {
   }
 }
 
-export default { estimateRoute, confirmRide, listCustomerRides };
+const listCustomers = async (_req: Request, res: Response) => {
+  try {
+    const { status, response } = await RideService.listCustomers();
+    res.status(status).json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error_code: 'INTERNAL_SERVER_ERROR',
+      error_description: 'Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde',
+    });
+  }
+}
+
+export default { estimateRoute, confirmRide, listCustomerRides, listCustomers };
