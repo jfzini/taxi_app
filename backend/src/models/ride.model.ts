@@ -29,6 +29,7 @@ const findDriversByDistance = async (distance: number) => {
       rating: d.rating,
       comment: d.comment,
     },
+    value: d.ratePerKm * distanceKm,
   }));
 
   return mappedDrivers;
