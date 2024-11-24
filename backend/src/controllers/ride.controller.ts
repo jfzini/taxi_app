@@ -14,7 +14,7 @@ const estimateRoute = async (req: Request, res: Response) => {
     console.error(error);
     res.status(500).json({
       error_code: 'INTERNAL_SERVER_ERROR',
-      error_description: 'An error occurred while processing the request',
+      error_description: 'Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde',
     });
   }
 };
@@ -30,7 +30,7 @@ const confirmRide = async (req: Request, res: Response) => {
     console.error(error);
     res.status(500).json({
       error_code: 'INTERNAL_SERVER_ERROR',
-      error_description: 'An error occurred while processing the request',
+      error_description: 'Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde',
     });
   }
 };
@@ -46,7 +46,7 @@ const listCustomerRides = async (req: Request, res: Response) => {
     console.error(error);
     res.status(500).json({
       error_code: 'INTERNAL_SERVER_ERROR',
-      error_description: 'An error occurred while processing the request',
+      error_description: 'Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde',
     });
   }
 }
