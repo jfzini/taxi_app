@@ -15,3 +15,9 @@ export const confirmRide = async (body) => {
 
   return response.data;
 };
+
+export const getCustomers = async () => {
+  const response = await axios.get('http://localhost:8080/ride/customers');
+
+  return response.data;
+}

@@ -1,16 +1,21 @@
 import { AxiosError } from 'axios';
 import { useState } from 'react';
-import { useForm, type UseFormRegister, type SubmitHandler } from 'react-hook-form';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useQuery } from '@tanstack/react-query';
+
+// Interfaces / Types
+import type { Customer, FormData, FormField } from './types';
 
 // Components
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import Select from '../../components/Select';
 
 // Services
-import { estimateRide } from '../../services/rides.service';
+import { estimateRide, getCustomers } from '../../services/rides.service';
 
 // Actions
 import {
@@ -26,22 +31,6 @@ import driverImage from '../../assets/driver.png';
 // Styles
 import './index.scss';
 
-type FormData = {
-  customerId: string;
-  origin: string;
-  destination: string;
-};
-
-type FormField = {
-  type: string;
-  placeholder: string;
-  label: string;
-  register: UseFormRegister<FormData>;
-  name: keyof FormData;
-  required: boolean;
-  error: string | undefined;
-};
-
 function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,6 +42,23 @@ function Home() {
 
   // States
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // React Query
+  const { data: customers, isLoading } = useQuery({
+    queryKey: ['customers'],
+    queryFn: async () => {
+      try {
+        const response = await getCustomers();
+        return response;
+      } catch (error) {
+        console.error(error);
+        toast.error('Não foi possível carregar os usuários. Tente novamente mais tarde');
+        return [];
+      }
+    },
+    staleTime: 1000 * 60 * 60 * 24, // 24 hours
+    retry: 3,
+  });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setIsSubmitting(true);
@@ -86,13 +92,18 @@ function Home() {
 
   const formFields: FormField[] = [
     {
-      type: 'text',
-      placeholder: 'Ex: 2a719913-f6fa-4404-b2d5-3e7b3f96f593',
-      label: 'ID do usuário',
+      type: 'select',
+      label: 'Usuário',
       register: register,
       name: 'customerId',
       required: true,
       error: errors.customerId?.message,
+      placeholder: isLoading ? 'Carregando...' : 'Selecione um usuário',
+      options:
+        customers?.map((customer: Customer) => ({
+          value: customer.id,
+          label: customer.name,
+        })) || [],
     },
     {
       type: 'text',
@@ -120,9 +131,26 @@ function Home() {
         <h1>ENCONTRE SUA PRÓXIMA VIAGEM!</h1>
         <h3>Insira as informações abaixo para dar início à sua solução do dia-dia</h3>
         <form onSubmit={handleSubmit(onSubmit)} className="form__container">
-          {formFields.map((field) => (
-            <Input key={field.label} {...field} />
-          ))}
+          {formFields.map((field) => {
+            switch (field.type) {
+              case 'select':
+                return (
+                  <Select
+                    key={field.label}
+                    label={field.label}
+                    name={field.name}
+                    register={field.register}
+                    required={field.required}
+                    placeholder={field.placeholder}
+                    error={field.error}
+                    options={field.options || []}
+                  />
+                );
+
+              default:
+                return <Input key={field.label} {...field} />;
+            }
+          })}
           <Button type="submit" isLoading={isSubmitting}>
             Buscar
           </Button>
