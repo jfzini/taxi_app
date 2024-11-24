@@ -24,3 +24,17 @@ export const getCustomers = async () => {
 
   return response.data;
 };
+
+export const getDrivers = async () => {
+  const response = await axios.get('http://localhost:8080/ride/drivers');
+
+  return response.data;
+};
+
+export const getRides = async (customer_id: string, driver_id: string) => {
+  const response = await axios.get(
+    `http://localhost:8080/ride/${customer_id}?driver_id=${driver_id}`,
+  );
+
+  return response.data;
+};

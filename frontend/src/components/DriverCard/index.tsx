@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -51,6 +51,7 @@ function renderStars(rating: number) {
 }
 
 function DriverCard({ id, name, description, vehicle, value, review }: Driver) {
+  const navigate = useNavigate();
   const { customer_id } = useParams<{ customer_id: string }>();
   const { coords, distance, duration } = useSelector((state: IReduxStates) => state.rides);
 
@@ -71,7 +72,7 @@ function DriverCard({ id, name, description, vehicle, value, review }: Driver) {
     try {
       await confirmRide(body);
       toast.success('Corrida confirmada com sucesso!');
-      // navigate(`/corrida/${response.id}`);
+      navigate('/historico');
     } catch (error) {
       console.error(error);
       if (error instanceof AxiosError && error.response?.data?.error_description) {
@@ -98,7 +99,7 @@ function DriverCard({ id, name, description, vehicle, value, review }: Driver) {
       <p>
         <strong>Comentário:</strong> {review.comment}
       </p>
-      <Button onClick={handleConfirm}>Contratar</Button>
+      <Button onClick={handleConfirm}>Escolher</Button>
     </article>
   );
 }

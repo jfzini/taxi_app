@@ -6,6 +6,8 @@ type SelectProps<T extends FieldValues> = {
   placeholder?: string;
   register: UseFormRegister<T>;
   options: { value: string; label: string }[];
+  defaultValue?: string;
+  disableDefaultOption?: boolean;
   required?: boolean;
   error?: string;
 };
@@ -15,7 +17,9 @@ function Select<T extends FieldValues>({
   placeholder = 'Selecione uma opção',
   name,
   register,
-  options,
+  options = [],
+  disableDefaultOption = true,
+  defaultValue = '',
   required = false,
   error,
 }: SelectProps<T>) {
@@ -35,7 +39,7 @@ function Select<T extends FieldValues>({
         required={required}
         className={`input ${error ? 'input--error' : ''}`}
       >
-        <option value="" disabled selected>
+        <option value={defaultValue} disabled={disableDefaultOption} selected>
           {placeholder}
         </option>
         {options.map((option) => (
