@@ -1,5 +1,13 @@
 version: "3.0"
 services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "8081:80"
+    volumes:
+      - ./frontend:/app-frontend
+      - /app-frontend/node_modules
+
   backend:
     build: ./backend
     ports:
@@ -12,6 +20,7 @@ services:
     command: ["sh", "-c", "npx prisma db push --force-reset && npm run seed && npm run dev"]
     volumes:
       - ./backend:/app-backend
+      - /app-backend/node_modules
 
   mysql:
     image: mysql:8.0

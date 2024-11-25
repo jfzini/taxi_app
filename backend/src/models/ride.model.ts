@@ -29,6 +29,7 @@ const findDriversByDistance = async (distance: number) => {
       rating: d.rating,
       comment: d.comment,
     },
+    value: d.ratePerKm * distanceKm,
   }));
 
   return mappedDrivers;
@@ -78,10 +79,29 @@ const listCustomerRides = async (customerId: string, driverId?: number) => {
     },
     orderBy: {
       date: 'desc',
-    }
+    },
   });
 
   return rides;
 };
 
-export default { findDriversByDistance, findDriver, createRide, listCustomerRides };
+const listCustomers = async () => {
+  const customers = await prisma.customer.findMany();
+
+  return customers;
+};
+
+const listDrivers = async () => {
+  const drivers = await prisma.driver.findMany();
+
+  return drivers;
+};
+
+export default {
+  findDriversByDistance,
+  findDriver,
+  createRide,
+  listCustomerRides,
+  listCustomers,
+  listDrivers,
+};
