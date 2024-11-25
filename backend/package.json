@@ -8,7 +8,8 @@
     "build": "tsc",
     "dev": "nodemon src/index.ts --watch src --ext ts --exec ts-node",
     "seed": "ts-node prisma/seed.ts",
-    "test": "jest"
+    "test": "jest",
+    "test-coverage": "jest --coverage"
   },
   "keywords": [],
   "author": "",
