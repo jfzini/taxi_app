@@ -1,5 +1,5 @@
-import { Router, type Request, type Response } from 'express';
-import {estimateMiddleware, listRidesMiddleware} from '../middlewares/estimate.middleware';
+import { Router } from 'express';
+import {estimateMiddleware, listRidesMiddleware} from '../middlewares/ride.middleware';
 import rideController from '../controllers/ride.controller';
 
 const rideRouter = Router();
