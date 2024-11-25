@@ -1,0 +1,54 @@
+.button {
+  display: flex;
+  justify-content: center;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  padding: 12px;
+  border-radius: 16px;
+  font-size: 1rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+  margin-top: 12px;
+
+  &:active {
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.8) inset;
+  }
+
+  &:disabled {
+    box-shadow: none;
+    background-color: var(--text-secondary);
+    cursor: not-allowed;
+
+    &:hover {
+      filter: none;
+    }
+
+    &:active {
+      box-shadow: none;
+    }
+  }
+}
+
+.button--contained {
+  &--success {
+    background-color: var(--success);
+    color: var(--text-primary);
+  }
+
+  &--regular {
+    background-color: var(--regular-dark);
+    color: var(--text-primary);
+
+    &:hover {
+      filter: brightness(1.2);
+    }
+  }
+
+  &--warning {
+    background-color: var(--warning);
+    color: var(--text-primary);
+  }
+}

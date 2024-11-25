@@ -48,7 +48,7 @@ const estimateRoute = async (origin: string, destination: string) => {
       status: 500,
       response: {
         error_code: 'INTERNAL_SERVER_ERROR',
-        error_description: 'An error occurred while processing the request',
+        error_description: 'Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde',
       },
     };
   }
@@ -71,7 +71,7 @@ const confirmRide = async ({
         status: 404,
         response: {
           error_code: 'INVALID_INSTANCE',
-          error_description: 'No drivers were found.',
+          error_description: 'Nenhum motorista foi encontrado',
         },
       };
     }
@@ -83,7 +83,7 @@ const confirmRide = async ({
         status: 406,
         response: {
           error_code: 'INVALID_INSTANCE',
-          error_description: 'Invalid distance for driver.',
+          error_description: 'Distância mínima do motorista não foi atingida.',
         },
       };
     }
@@ -112,7 +112,7 @@ const confirmRide = async ({
       status: 500,
       response: {
         error_code: 'INTERNAL_SERVER_ERROR',
-        error_description: 'An error occurred while processing the request',
+        error_description: 'Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde',
       },
     };
   }
@@ -128,7 +128,7 @@ const listCustomerRides = async (customerId: string, driverId?: number) => {
           status: 400,
           response: {
             error_code: 'INVALID_DRIVER',
-            error_description: 'Invalid driver id',
+            error_description: 'O motorista informado não foi encontrado',
           },
         };
       }
@@ -141,7 +141,7 @@ const listCustomerRides = async (customerId: string, driverId?: number) => {
         status: 404,
         response: {
           error_code: 'NOT_RIDES_FOUND',
-          error_description: 'No rides found for this customer',
+          error_description: 'Nenhuma viagem encontrada',
         },
       };
     }
@@ -158,10 +158,64 @@ const listCustomerRides = async (customerId: string, driverId?: number) => {
       status: 500,
       response: {
         error_code: 'INTERNAL_SERVER_ERROR',
-        error_description: 'An error occurred while processing the request',
+        error_description: 'Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde',
       },
     };
   }
 };
 
-export default { estimateRoute, confirmRide, listCustomerRides };
+const listCustomers = async () => {
+  try {
+    const customers = await RideModel.listCustomers();
+
+    if (customers.length === 0) {
+      return {
+        status: 404,
+        response: {
+          error_code: 'NOT_CUSTOMERS_FOUND',
+          error_description: 'Nenhum cliente encontrado',
+        },
+      };
+    }
+
+    return { status: 200, response: customers };
+  } catch (error) {
+    console.error(error);
+    return {
+      status: 500,
+      response: {
+        error_code: 'INTERNAL_SERVER_ERROR',
+        error_description: 'Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde',
+      },
+    };
+  }
+};
+
+const listDrivers = async () => {
+  try {
+    const drivers = await RideModel.listDrivers();
+
+    if (drivers.length === 0) {
+      return {
+        status: 404,
+        response: {
+          error_code: 'NOT_DRIVERS_FOUND',
+          error_description: 'Nenhum motorista encontrado',
+        },
+      };
+    }
+
+    return { status: 200, response: drivers };
+  } catch (error) {
+    console.error(error);
+    return {
+      status: 500,
+      response: {
+        error_code: 'INTERNAL_SERVER_ERROR',
+        error_description: 'Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde',
+      },
+    };
+  }
+};
+
+export default { estimateRoute, confirmRide, listCustomerRides, listCustomers, listDrivers };

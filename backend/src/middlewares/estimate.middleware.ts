@@ -5,7 +5,7 @@ export const estimateMiddleware = (req: Request, res: Response, next: NextFuncti
   if (!customer_id || !origin || !destination) {
     res.status(400).json({
       error_code: 'INVALID_DATA',
-      error_description: 'Missing required fields',
+      error_description: 'Campos obrigatórios não preenchidos. Confira os campos e tente novamente',
     });
     return;
   }
@@ -13,7 +13,7 @@ export const estimateMiddleware = (req: Request, res: Response, next: NextFuncti
   if (origin === destination) {
     res.status(400).json({
       error_code: 'INVALID_DATA',
-      error_description: 'Origin and destination cannot be the same',
+      error_description: 'Origem e destino não podem ser iguais. Confira os campos e tente novamente',
     });
     return;
   }
@@ -26,7 +26,7 @@ export const listRidesMiddleware = (req: Request, res: Response, next: NextFunct
   if (!customer_id) {
     res.status(400).json({
       error_code: 'INVALID_DATA',
-      error_description: 'Missing required fields',
+      error_description: 'Campos obrigatórios não preenchidos. Confira os campos e tente novamente',
     });
     return;
   }
