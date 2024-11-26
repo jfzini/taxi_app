@@ -93,6 +93,19 @@ describe('RideService', () => {
       });
     });
 
+    it('should return 404 if there is no routes key on the API response', async () => {
+      (getLocationCoords as jest.Mock).mockResolvedValueOnce({ lat: 0, lng: 0 });
+      (getLocationCoords as jest.Mock).mockResolvedValueOnce({ lat: 1, lng: 1 });
+      (getRoutes as jest.Mock).mockResolvedValueOnce([{}]);
+
+      const result = await RideService.estimateRoute('origin', 'destination');
+
+      expect(result).toEqual({
+        status: 404,
+        message: 'No routes found',
+      });
+    });
+
     it('should return 200 with route details if routes are found', async () => {
       const mockRoute = [
         {
@@ -127,6 +140,38 @@ describe('RideService', () => {
           destination: { lat: 1, lng: 1 },
           distance: 2000,
           duration: 1100,
+          options: mockDrivers,
+          routeResponse: mockRoute[0],
+        },
+      });
+    });
+
+    it('should return 200, but with duration as undefined if its not present on the API response', async () => {
+      const mockRoute = [
+        {
+          routes: [
+            {
+              distanceMeters: '2000',
+              duration: null,
+            },
+          ],
+        },
+      ];
+      const mockDrivers = [{ id: 1, name: 'Driver 1' }];
+      (getLocationCoords as jest.Mock).mockResolvedValueOnce({ lat: 0, lng: 0 });
+      (getLocationCoords as jest.Mock).mockResolvedValueOnce({ lat: 1, lng: 1 });
+      (getRoutes as jest.Mock).mockResolvedValueOnce(mockRoute);
+      (RideModel.findDriversByDistance as jest.Mock).mockResolvedValue(mockDrivers);
+
+      const result = await RideService.estimateRoute('origin', 'destination');
+
+      expect(result).toEqual({
+        status: 200,
+        response: {
+          origin: { lat: 0, lng: 0 },
+          destination: { lat: 1, lng: 1 },
+          distance: 2000,
+          duration: undefined,
           options: mockDrivers,
           routeResponse: mockRoute[0],
         },
