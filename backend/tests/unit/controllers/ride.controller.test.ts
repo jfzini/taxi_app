@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import RideService from '../../../src/services/ride.service';
-import rideController from '../../../src/controllers/ride.controller';
+import RideController from '../../../src/controllers/ride.controller';
 
 jest.mock('../../../src/services/ride.service');
 
@@ -28,6 +28,10 @@ describe('Ride Controller', () => {
       };
     });
 
+		afterEach(() => {
+			jest.clearAllMocks();
+		});
+
     it('should return the estimated route with status code', async () => {
       const mockResponse = { distance: 10, time: 15 };
       (RideService.estimateRoute as jest.Mock).mockResolvedValue({
@@ -35,7 +39,7 @@ describe('Ride Controller', () => {
         response: mockResponse,
       });
 
-      await rideController.estimateRoute(req as Request, res as Response);
+      await RideController.estimateRoute(req as Request, res as Response);
 
       expect(RideService.estimateRoute).toHaveBeenCalledWith('origin', 'destination');
       expect(res.status).toHaveBeenCalledWith(200);
@@ -46,7 +50,7 @@ describe('Ride Controller', () => {
       const mockError = new Error('Test error');
       (RideService.estimateRoute as jest.Mock).mockRejectedValue(mockError);
 
-      await rideController.estimateRoute(req as Request, res as Response);
+      await RideController.estimateRoute(req as Request, res as Response);
 
       expect(RideService.estimateRoute).toHaveBeenCalledWith('origin', 'destination');
       expect(res.status).toHaveBeenCalledWith(500);
@@ -68,6 +72,10 @@ describe('Ride Controller', () => {
       };
     });
 
+		afterEach(() => {
+			jest.clearAllMocks();
+		});
+
     it('should confirm the ride and return status code', async () => {
       const mockResponse = { rideId: 'ride123' };
       (RideService.confirmRide as jest.Mock).mockResolvedValue({
@@ -75,7 +83,7 @@ describe('Ride Controller', () => {
         response: mockResponse,
       });
 
-      await rideController.confirmRide(req as Request, res as Response);
+      await RideController.confirmRide(req as Request, res as Response);
 
       expect(RideService.confirmRide).toHaveBeenCalledWith({
         customerId: 'customer123',
@@ -89,7 +97,7 @@ describe('Ride Controller', () => {
       const mockError = new Error('Test error');
       (RideService.confirmRide as jest.Mock).mockRejectedValue(mockError);
 
-      await rideController.confirmRide(req as Request, res as Response);
+      await RideController.confirmRide(req as Request, res as Response);
 
       expect(RideService.confirmRide).toHaveBeenCalledWith({
         customerId: 'customer123',
@@ -116,6 +124,10 @@ describe('Ride Controller', () => {
       };
     });
 
+		afterEach(() => {
+			jest.clearAllMocks();
+		});
+
     it('should list customer rides and return status code', async () => {
       const mockResponse = [{ rideId: 'ride123', driverId: 1 }];
       (RideService.listCustomerRides as jest.Mock).mockResolvedValue({
@@ -123,7 +135,7 @@ describe('Ride Controller', () => {
         response: mockResponse,
       });
 
-      await rideController.listCustomerRides(req as Request, res as Response);
+      await RideController.listCustomerRides(req as Request, res as Response);
 
       expect(RideService.listCustomerRides).toHaveBeenCalledWith('customer123', 1);
       expect(res.status).toHaveBeenCalledWith(200);
@@ -134,7 +146,7 @@ describe('Ride Controller', () => {
       const mockError = new Error('Test error');
       (RideService.listCustomerRides as jest.Mock).mockRejectedValue(mockError);
 
-      await rideController.listCustomerRides(req as Request, res as Response);
+      await RideController.listCustomerRides(req as Request, res as Response);
 
       expect(RideService.listCustomerRides).toHaveBeenCalledWith('customer123', 1);
       expect(res.status).toHaveBeenCalledWith(500);
@@ -151,6 +163,10 @@ describe('Ride Controller', () => {
       };
     });
 
+		afterEach(() => {
+			jest.clearAllMocks();
+		});
+
     it('should list customers and return status code', async () => {
       const mockResponse = [{ customerId: 'customer123' }];
       (RideService.listCustomers as jest.Mock).mockResolvedValue({
@@ -158,7 +174,7 @@ describe('Ride Controller', () => {
         response: mockResponse,
       });
 
-      await rideController.listCustomers(req as Request, res as Response);
+      await RideController.listCustomers(req as Request, res as Response);
 
       expect(RideService.listCustomers).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(200);
@@ -169,7 +185,7 @@ describe('Ride Controller', () => {
       const mockError = new Error('Test error');
       (RideService.listCustomers as jest.Mock).mockRejectedValue(mockError);
 
-      await rideController.listCustomers(req as Request, res as Response);
+      await RideController.listCustomers(req as Request, res as Response);
 
       expect(RideService.listCustomers).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(500);
@@ -186,6 +202,10 @@ describe('Ride Controller', () => {
       };
     });
 
+		afterEach(() => {
+			jest.clearAllMocks();
+		});
+
     it('should list drivers and return status code', async () => {
       const mockResponse = [{ driverId: 'driver123' }];
       (RideService.listDrivers as jest.Mock).mockResolvedValue({
@@ -193,7 +213,7 @@ describe('Ride Controller', () => {
         response: mockResponse,
       });
 
-      await rideController.listDrivers(req as Request, res as Response);
+      await RideController.listDrivers(req as Request, res as Response);
 
       expect(RideService.listDrivers).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(200);
@@ -204,7 +224,7 @@ describe('Ride Controller', () => {
       const mockError = new Error('Test error');
       (RideService.listDrivers as jest.Mock).mockRejectedValue(mockError);
 
-      await rideController.listDrivers(req as Request, res as Response);
+      await RideController.listDrivers(req as Request, res as Response);
 
       expect(RideService.listDrivers).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(500);

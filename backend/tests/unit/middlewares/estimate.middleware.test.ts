@@ -31,6 +31,10 @@ describe('Estimate Middleware', () => {
       next = jest.fn();
     });
 
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
     it('should return 400 if customer_id is missing', () => {
       req.body = { origin: 'A', destination: 'B' };
 
@@ -92,6 +96,10 @@ describe('Estimate Middleware', () => {
         json: jest.fn(),
       };
       next = jest.fn();
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
     });
 
     it('should return 400 if customer_id is missing', () => {
