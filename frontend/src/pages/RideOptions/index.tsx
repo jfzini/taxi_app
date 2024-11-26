@@ -9,7 +9,7 @@ import DriverCard from '../../components/DriverCard';
 // Styles
 import './index.scss';
 
-const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+const GOOGLE_API_KEY = import.meta.env.GOOGLE_API_KEY;
 
 function RideOptions() {
   const { rides, coords } = useSelector((state: IReduxStates) => state.rides);  
