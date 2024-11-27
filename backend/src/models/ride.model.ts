@@ -46,6 +46,16 @@ const findDriver = async ({ id, name }: IDriver) => {
   return driver;
 };
 
+const findCustomer = async (customerId: string) => {
+  const customer = await prisma.customer.findUnique({
+    where: {
+      id: customerId,
+    },
+  });
+
+  return customer;
+}
+
 const createRide = async (ride: IRide) => {
   const createdRide = await prisma.ride.create({
     data: ride,
@@ -100,6 +110,7 @@ const listDrivers = async () => {
 export default {
   findDriversByDistance,
   findDriver,
+  findCustomer,
   createRide,
   listCustomerRides,
   listCustomers,
