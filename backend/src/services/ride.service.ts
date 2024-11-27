@@ -140,7 +140,7 @@ const listCustomerRides = async (customerId: string, driverId?: number) => {
       return {
         status: 404,
         response: {
-          error_code: 'NOT_RIDES_FOUND',
+          error_code: 'NO_RIDES_FOUND',
           error_description: 'Nenhuma viagem encontrada',
         },
       };
@@ -172,7 +172,7 @@ const listCustomers = async () => {
       return {
         status: 404,
         response: {
-          error_code: 'NOT_CUSTOMERS_FOUND',
+          error_code: 'NO_CUSTOMERS_FOUND',
           error_description: 'Nenhum cliente encontrado',
         },
       };
@@ -199,7 +199,7 @@ const listDrivers = async () => {
       return {
         status: 404,
         response: {
-          error_code: 'NOT_DRIVERS_FOUND',
+          error_code: 'NO_DRIVERS_FOUND',
           error_description: 'Nenhum motorista encontrado',
         },
       };
