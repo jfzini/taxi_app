@@ -9,7 +9,7 @@
     "dev": "nodemon src/index.ts --watch src --ext ts --exec ts-node",
     "seed": "ts-node prisma/seed.ts",
     "test": "jest --silent",
-    "test-coverage": "jest --coverage"
+    "test-coverage": "jest --coverage --silent"
   },
   "keywords": [],
   "author": "",
