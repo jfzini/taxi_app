@@ -3,7 +3,7 @@ import { RoutesClient } from '@googlemaps/routing';
 import axios from 'axios';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({ path: '../.env' });
 
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
 
