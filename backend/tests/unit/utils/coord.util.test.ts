@@ -74,8 +74,6 @@ describe('coord.util', () => {
       const routes = await getRoutes({
         origin,
         destination,
-        travelMode: 'DRIVE',
-        routingPreference: 'TRAFFIC_UNAWARE',
       });
 
       expect(routes).toEqual(mockRoutes);
