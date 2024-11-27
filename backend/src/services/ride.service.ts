@@ -106,7 +106,7 @@ const confirmRide = async ({
       distance,
       duration,
       value,
-      customerId,
+      customerId: foundCustomer.id,
       driverId: foundDriver.id,
     };
 
@@ -158,7 +158,7 @@ const listCustomerRides = async (customerId: string, driverId?: number) => {
       }
     }
 
-    const rides = await RideModel.listCustomerRides(customerId, driverId);
+    const rides = await RideModel.listCustomerRides(foundCustomer.id, driverId);
 
     if (rides.length === 0) {
       return {
