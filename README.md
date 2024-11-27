@@ -1,5 +1,3 @@
-### README para Aplicação de Transporte Particular
-
 # App de Transporte Particular
 
 Este repositório contém o código para o desenvolvimento de uma aplicação de transporte particular, incluindo backend e frontend.
