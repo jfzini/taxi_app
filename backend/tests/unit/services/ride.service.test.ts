@@ -14,17 +14,25 @@ const INTERNAL_SERVER_ERROR = {
   error_code: 'INTERNAL_SERVER_ERROR',
   error_description: 'Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde',
 };
-const INVALID_INSTANCE_DRIVER = {
-  error_code: 'INVALID_INSTANCE',
+const DRIVER_NOT_FOUND = {
+  error_code: 'DRIVER_NOT_FOUND',
   error_description: 'Nenhum motorista foi encontrado',
 };
-const INVALID_INSTANCE_DISTANCE = {
-  error_code: 'INVALID_INSTANCE',
+const CUSTOMER_NOT_FOUND = {
+  error_code: 'CUSTOMER_NOT_FOUND',
+  error_description: 'Nenhum cliente foi encontrado com esse ID. Verifique a informação e tente novamente',
+}
+const INVALID_DISTANCE = {
+  error_code: 'INVALID_DISTANCE',
   error_description: 'Distância mínima do motorista não foi atingida.',
 };
 const INVALID_DRIVER = {
   error_code: 'INVALID_DRIVER',
   error_description: 'O motorista informado não foi encontrado',
+};
+const INVALID_CUSTOMER = {
+  error_code: 'INVALID_CUSTOMER',
+  error_description: 'Nenhum cliente foi encontrado com esse ID. Verifique a informação e tente novamente',
 };
 const NO_RIDES_FOUND = {
   error_code: 'NO_RIDES_FOUND',
@@ -191,7 +199,38 @@ describe('RideService', () => {
   });
 
   describe('confirmRide', () => {
+    const customerMock = {
+      id: '1',
+      name: 'Chicó',
+      email: 'chico@example.com',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    it('should return 404 if no customer is found', async () => {
+      (RideModel.findCustomer as jest.Mock).mockResolvedValue(null);
+
+      const result = await RideService.confirmRide({
+        customerId: '1',
+        origin: 'origin',
+        destination: 'destination',
+        distance: 1000,
+        duration: '600',
+        driver: {
+          id: 1,
+          name: 'Driver',
+        },
+        value: 100,
+      });
+
+      expect(result).toEqual({
+        status: 404,
+        response: CUSTOMER_NOT_FOUND,
+      });
+    });
+
     it('should return 404 if no driver is found', async () => {
+      (RideModel.findCustomer as jest.Mock).mockResolvedValue(customerMock);
       (RideModel.findDriver as jest.Mock).mockResolvedValue(null);
 
       const result = await RideService.confirmRide({
@@ -209,11 +248,12 @@ describe('RideService', () => {
 
       expect(result).toEqual({
         status: 404,
-        response: INVALID_INSTANCE_DRIVER,
+        response: DRIVER_NOT_FOUND,
       });
     });
 
     it('should return 406 if driver minimum distance is not met', async () => {
+      (RideModel.findCustomer as jest.Mock).mockResolvedValue(customerMock);
       (RideModel.findDriver as jest.Mock).mockResolvedValue({ id: 'driver', minKm: 2 });
 
       const result = await RideService.confirmRide({
@@ -231,11 +271,12 @@ describe('RideService', () => {
 
       expect(result).toEqual({
         status: 406,
-        response: INVALID_INSTANCE_DISTANCE,
+        response: INVALID_DISTANCE,
       });
     });
 
     it('should return 200 if ride is successfully created', async () => {
+      (RideModel.findCustomer as jest.Mock).mockResolvedValue(customerMock);
       (RideModel.findDriver as jest.Mock).mockResolvedValue({ id: 'driver', minKm: 0 });
       (RideModel.createRide as jest.Mock).mockResolvedValue({});
 
@@ -261,7 +302,7 @@ describe('RideService', () => {
     });
 
     it('should return 500 if an error occurs', async () => {
-      (RideModel.findDriver as jest.Mock).mockRejectedValue(new Error('Database error'));
+      (RideModel.findCustomer as jest.Mock).mockRejectedValue(new Error('Database error'));
 
       const result = await RideService.confirmRide({
         customerId: '1',
@@ -284,8 +325,28 @@ describe('RideService', () => {
   });
 
   describe('listCustomerRides', () => {
+    const customerMock = {
+      id: '1',
+      name: 'Chicó',
+      email: 'chico@example.com',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    it('should return 400 if customer is not found', async () => {
+      (RideModel.findCustomer as jest.Mock).mockResolvedValue(null);
+
+      const result = await RideService.listCustomerRides('customerId', 1);
+
+      expect(result).toEqual({
+        status: 400,
+        response: INVALID_CUSTOMER,
+      });
+    });
+
     it('should return 400 if driver is not found', async () => {
       (RideModel.findDriver as jest.Mock).mockResolvedValue(null);
+      (RideModel.findCustomer as jest.Mock).mockResolvedValue(customerMock);
 
       const result = await RideService.listCustomerRides('customerId', 1);
 
@@ -297,6 +358,7 @@ describe('RideService', () => {
 
     it('should return 404 if no rides are found', async () => {
       (RideModel.listCustomerRides as jest.Mock).mockResolvedValue([]);
+      (RideModel.findCustomer as jest.Mock).mockResolvedValue(customerMock);
 
       const result = await RideService.listCustomerRides('customerId');
 
@@ -309,6 +371,7 @@ describe('RideService', () => {
     it('should return 200 with rides if rides are found', async () => {
       const mockRides = [{ id: 1, origin: 'origin', destination: 'destination' }];
       (RideModel.listCustomerRides as jest.Mock).mockResolvedValue(mockRides);
+      (RideModel.findCustomer as jest.Mock).mockResolvedValue(customerMock);
 
       const result = await RideService.listCustomerRides('customerId');
 
@@ -322,7 +385,7 @@ describe('RideService', () => {
     });
 
     it('should return 500 if an error occurs', async () => {
-      (RideModel.listCustomerRides as jest.Mock).mockRejectedValue(new Error('Database error'));
+      (RideModel.findCustomer as jest.Mock).mockRejectedValue(new Error('Database error'));
 
       const result = await RideService.listCustomerRides('customerId');
 

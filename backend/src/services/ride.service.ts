@@ -64,13 +64,25 @@ const confirmRide = async ({
   value,
 }: IConfirmRideParams) => {
   try {
+    const foundCustomer = await RideModel.findCustomer(customerId);
+
+    if (!foundCustomer) {
+      return {
+        status: 404,
+        response: {
+          error_code: 'CUSTOMER_NOT_FOUND',
+          error_description: 'Nenhum cliente foi encontrado com esse ID. Verifique a informação e tente novamente',
+        },
+      };
+    }
+
     const foundDriver = await RideModel.findDriver(driver);
 
     if (!foundDriver) {
       return {
         status: 404,
         response: {
-          error_code: 'INVALID_INSTANCE',
+          error_code: 'DRIVER_NOT_FOUND',
           error_description: 'Nenhum motorista foi encontrado',
         },
       };
@@ -82,7 +94,7 @@ const confirmRide = async ({
       return {
         status: 406,
         response: {
-          error_code: 'INVALID_INSTANCE',
+          error_code: 'INVALID_DISTANCE',
           error_description: 'Distância mínima do motorista não foi atingida.',
         },
       };
@@ -120,6 +132,18 @@ const confirmRide = async ({
 
 const listCustomerRides = async (customerId: string, driverId?: number) => {
   try {
+    const foundCustomer = await RideModel.findCustomer(customerId);
+
+    if (!foundCustomer) {
+      return {
+        status: 400,
+        response: {
+          error_code: 'INVALID_CUSTOMER',
+          error_description: 'Nenhum cliente foi encontrado com esse ID. Verifique a informação e tente novamente',
+        },
+      };
+    }
+
     if (driverId) {
       const foundDriver = await RideModel.findDriver({ id: driverId });
 

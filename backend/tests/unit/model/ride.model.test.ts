@@ -15,6 +15,7 @@ jest.mock('@prisma/client', () => {
     },
     customer: {
       findMany: jest.fn(),
+      findUnique: jest.fn(),
     },
   };
   return { PrismaClient: jest.fn(() => mockPrisma) };
@@ -75,6 +76,27 @@ describe('rideModel', () => {
           value: 50,
         },
       ]);
+    });
+  });
+
+  describe('findCustomer', () => {
+    it('should return a customer by id', async () => {
+      const customerMock = {
+        id: '1',
+        name: 'Chicó',
+        email: 'chico@example.com',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      (prisma.customer.findUnique as jest.Mock).mockResolvedValue(customerMock);
+
+      const result = await rideModel.findCustomer('1');
+
+      expect(prisma.customer.findUnique).toHaveBeenCalledWith({
+        where: { id: '1' },
+      });
+      expect(result).toEqual(customerMock);
     });
   });
 
